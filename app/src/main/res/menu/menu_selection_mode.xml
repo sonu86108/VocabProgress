@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res_auto">
+    <item
+        android:id="@+id/id_item_delete"
+        android:icon="@drawable/ic_delete"
+        android:title="Delete"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/id_it_makeQuiz"
+        android:title="Make Quiz" />
+
+    <item
+        android:id="@+id/item"
+        android:title="Item" />
+</menu>

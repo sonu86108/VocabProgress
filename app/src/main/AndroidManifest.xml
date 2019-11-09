@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.sonu.vocabprogress">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/login_icon"
+        android:label="@string/app_name"
+        android:resizeableActivity="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:label="Settings"
+            android:name=".ui.activities.SettingsActivity"></activity>
+        <activity
+            android:label="Words"
+            android:name=".ui.activities.WordListActivity"
+            android:parentActivityName=".ui.activities.MainActivity"
+            android:theme="@style/Theme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.MainActivity" />
+        </activity>
+        <activity android:name=".ui.activities.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activities.NotificationDialogActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/TransparentCompat" />
+        <activity
+            android:name=".ui.activities.MainActivity"
+            android:label="@string/app_name"></activity>
+        <activity
+            android:label="Quize List"
+            android:name=".ui.activities.QuizesActivity" />
+        <activity
+            android:label="Words"
+            android:name=".ui.activities.QuizWordsActivity" />
+        <activity android:name=".utilities.tmp.AndroidDatabaseManager" />
+        <activity
+            android:label="Play Quiz"
+            android:name=".ui.activities.PlayQuizActivity" />
+        <activity
+            android:label="Result"
+            android:name=".ui.activities.QuizResultActivity" />
+
+        <service android:name=".services.ClipBoardListenerService" />
+    </application>
+
+</manifest>

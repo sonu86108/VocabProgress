@@ -1,0 +1,56 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/id_cardView_quizRow"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:layout_gravity="top"
+    android:layout_marginBottom="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="13dp">
+
+        <TextView
+            android:id="@+id/id_tv_quizId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerHorizontal="true"
+            android:text="quizId"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/id_tv_quizName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="50dp"
+            android:layout_toRightOf="@id/id_tv_quizId"
+            android:text="QuizName"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/id_tv_quizDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:text="Date"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/id_playQuiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@color/light"
+            android:src="@drawable/ic_btn_play"
+            android:visibility="gone" />
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
