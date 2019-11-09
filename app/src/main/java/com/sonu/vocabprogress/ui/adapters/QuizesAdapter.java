@@ -35,7 +35,6 @@ public class QuizesAdapter extends RecyclerView.Adapter<QuizesAdapter.QuizesView
 
     @Override
     public void onBindViewHolder(QuizesViewHolder p1, int p2) {
-        p1.tvQuizId.setText("" + quizList.get(p2).getQuizId());
         p1.tvQuizName.setText(quizList.get(p2).getQuizName());
         p1.tvQuizDate.setText(quizList.get(p2).getDate());
     }
@@ -48,15 +47,14 @@ public class QuizesAdapter extends RecyclerView.Adapter<QuizesAdapter.QuizesView
 
     public static class QuizesViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
-        TextView tvQuizId, tvQuizName, tvQuizDate;
+        TextView  tvQuizName, tvQuizDate;
         ImageView ivPlayQuiz;
         RecyclerViewTouchEventListener eventListener;
         boolean isItPlayMode;
 
-        public QuizesViewHolder(View v, RecyclerViewTouchEventListener eventListener, boolean mode) {
+        private QuizesViewHolder(View v, RecyclerViewTouchEventListener eventListener, boolean mode) {
             super(v);
             this.eventListener = eventListener;
-            tvQuizId = v.findViewById(R.id.id_tv_quizId);
             tvQuizName = v.findViewById(R.id.id_tv_quizName);
             tvQuizDate = v.findViewById(R.id.id_tv_quizDate);
             if (mode) {

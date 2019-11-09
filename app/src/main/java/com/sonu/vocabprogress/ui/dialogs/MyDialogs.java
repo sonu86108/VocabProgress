@@ -157,17 +157,17 @@ public class MyDialogs implements View.OnClickListener {
                         uploadQuizWordsToFirebase(quizKey,word);
                     }
                     pbMakeQuiz.setVisibility(View.GONE);
-                    btnSave.setFocusable(true);
-                    context.showInSnackBar("Quiz created successfully");
                     dialog.dismiss();
+                    selectionMode.exitSelectionMode();
+                    context.showInSnackBar("Quiz created successfully");
                 }
             }
         });
     }
 
     private void uploadQuizWordsToFirebase( String quizKey,Word word) {
-        cloudDatabaseHelper.mDbQuizWordRef.child(quizKey);
-        cloudDatabaseHelper.mDbQuizWordRef.child(cloudDatabaseHelper.mDbQuizWordRef.push().getKey()).
+        DatabaseReference quizDbRef=cloudDatabaseHelper.mDbQuizWordRef.child(quizKey);
+        quizDbRef.child(quizDbRef.push().getKey()).
                 setValue(word);
     }
 

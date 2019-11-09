@@ -112,6 +112,7 @@ public class WordListActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
         if (requestCode == 24) {
             if (resultCode == RESULT_OK) {
                 updateWordList();
@@ -123,6 +124,12 @@ public class WordListActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         updateWordList();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        selectionMode.exitSelectionMode();
     }
 
     @Override

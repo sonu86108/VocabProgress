@@ -24,7 +24,8 @@ import java.util.Random;
 
 public class PlayQuizActivity extends AppCompatActivity implements
         View.OnClickListener {
-    int quizId, quizNumber = 0, totalQuiz = 10;
+    int quizNumber = 0, totalQuiz = 10;
+    String quizId;
     List<Word> quizWords;
     List<String> randomWords;
     List<RadioButton> radioButtons;
@@ -139,8 +140,8 @@ public class PlayQuizActivity extends AppCompatActivity implements
 
     }
 
-    public int getQuizId() {
-        return getIntent().getExtras().getInt("quizId");
+    public String getQuizId() {
+        return getIntent().getExtras().getString("quizId");
     }
 
 

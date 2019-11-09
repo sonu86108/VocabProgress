@@ -18,6 +18,12 @@
         android:visibility="gone"
         android:textSize="15dp"
         android:text="Sorry, You don't have any quiz created yet. Go back to words section and create a quiz first."/>
+    <ProgressBar
+        android:id="@+id/id_pb_quiz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

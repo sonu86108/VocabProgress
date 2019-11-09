@@ -2,9 +2,9 @@ package com.sonu.vocabprogress.models;
 
 public class Quiz {
     private String quizName, date;
-    private int quizId;
+    private String quizId;
 
-    public Quiz(int quizId, String quizName, String date) {
+    public Quiz(String quizId, String quizName, String date) {
         this.quizId = quizId;
         this.quizName = quizName;
         this.date = date;
@@ -34,11 +34,15 @@ public class Quiz {
         this.date = date;
     }
 
-    public int getQuizId() {
+    public String getQuizId() {
         return quizId;
     }
 
-    public void setQuizId(int quizId) {
+    public void setQuizId(String quizId) {
         this.quizId = quizId;
     }
+
+
+
+
 }

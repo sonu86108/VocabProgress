@@ -4,16 +4,25 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.common.util.ClientLibraryUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Quiz;
 import com.sonu.vocabprogress.ui.adapters.QuizesAdapter;
+import com.sonu.vocabprogress.utilities.helpers.CloudDatabaseHelper;
 import com.sonu.vocabprogress.utilities.helpers.QuizHelper;
 import com.sonu.vocabprogress.utilities.helpers.RecyclerViewTouchEventListener;
 
@@ -27,9 +36,11 @@ public class QuizesActivity extends AppCompatActivity implements
     RecyclerView quizesRecyclerView;
     QuizesAdapter quizesAdapter;
     TextView tvMsg;
+    ProgressBar pbQuiz;
     boolean isItPlayMode;
     List<Quiz> quizList;
     QuizHelper quizHelper;
+    CloudDatabaseHelper cloudDatabaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +52,11 @@ public class QuizesActivity extends AppCompatActivity implements
     }
 
     private void init() {
-        quizList = new ArrayList<Quiz>();
+        quizList = new ArrayList<>();
         tvMsg=findViewById(R.id.id_tv_msg);
+        pbQuiz=findViewById(R.id.id_pb_quiz);
         quizHelper = QuizHelper.getInstance(this);
+        cloudDatabaseHelper= CloudDatabaseHelper.getInstance();
     }
 
     private void initRecyclerView() {
@@ -59,23 +72,16 @@ public class QuizesActivity extends AppCompatActivity implements
     protected void onStart() {
         super.onStart();
         updateQuizList();
-        if(quizList.isEmpty()){
-            quizesRecyclerView.setVisibility(View.GONE);
-            tvMsg.setVisibility(View.VISIBLE);
-        }
+
     }
 
     private void updateQuizList() {
         quizList.clear();
-        Cursor cursor = quizHelper.retrieveData();
-        if (cursor.moveToFirst()) {
-            do {
-                quizList.add(new Quiz(cursor.getInt(0), cursor
-                        .getString(1), cursor.getString(2)));
-
-            } while (cursor.moveToNext());
+        if(FirebaseAuth.getInstance().getCurrentUser() !=null){
+          readQuizFromFirebase();
+        }else {
+            readQuizFromLocalDb();
         }
-        quizesAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -105,6 +111,50 @@ public class QuizesActivity extends AppCompatActivity implements
                 getBoolean("play_mode")) {
             getSupportActionBar().setTitle("Play Quiz");
             isItPlayMode = true;
+        }
+    }
+
+    private void readQuizFromLocalDb(){
+        Cursor cursor = quizHelper.retrieveData();
+        if (cursor.moveToFirst()) {
+            do {
+                quizList.add(new Quiz(String.valueOf(cursor.getInt(0)), cursor
+                        .getString(1), cursor.getString(2)));
+
+            } while (cursor.moveToNext());
+        }
+        quizesAdapter.notifyDataSetChanged();
+        onDataNotFoundMsg();
+    }
+
+    private void readQuizFromFirebase(){
+        pbQuiz.setVisibility(View.VISIBLE);
+        cloudDatabaseHelper.mDbQuizRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                   for(DataSnapshot ds: dataSnapshot.getChildren()){
+                       quizList.add(new Quiz(ds.getKey(),ds.getValue(Quiz.class).getQuizName(),ds.getValue(Quiz.class).getDate()));
+                   }
+                   pbQuiz.setVisibility(View.GONE);
+                   quizesAdapter.notifyDataSetChanged();
+                   onDataNotFoundMsg();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                    toast(databaseError.getMessage());
+            }
+        });
+    }
+
+    private void toast(String msg){
+        Toast.makeText(QuizesActivity.this,msg,Toast.LENGTH_LONG).show();
+    }
+
+    private void onDataNotFoundMsg(){
+        if(quizList.isEmpty()){
+            quizesRecyclerView.setVisibility(View.GONE);
+            tvMsg.setVisibility(View.VISIBLE);
         }
     }
 }

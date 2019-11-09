@@ -46,10 +46,10 @@ public class QuizWordHelper {
         }
     }
 
-    public Cursor retrieveData(int quizId) {
+    public Cursor retrieveData(String quizId) {
         String query = "SELECT " + db.C3_QWL_WORD_NAME + "," +
                 db.C4_QWL_MEANING + "," + db.C5_QWL_DESC + " FROM " + db.TN_QUIZ_WORD_LIST + " WHERE " + db.C2_QUIZ_ID + "=" +
-                String.valueOf(quizId);
+                quizId;
         //String q="SELECT * FROM "+db.TN_QUIZ_WORD_LIST;
         Cursor cursor =
                 db.getReadableDatabase().rawQuery(query, null);
