@@ -21,6 +21,7 @@ public class QuizResultActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_result);
+        if(getSupportActionBar()!=null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
         showScore();
         btnOk.setOnClickListener(this);
@@ -38,6 +39,12 @@ public class QuizResultActivity extends AppCompatActivity
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
     }
 
     public void init() {

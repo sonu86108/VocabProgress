@@ -1,15 +1,28 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="bottom"
-    android:orientation="vertical">
+    android:background="@color/colorPrimary"
+    android:paddingBottom="50dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:text="Build Your Vocabulary By Playing Vocabulary Quizes"
+        android:textSize="20dp"
+        android:textColor="@color/light"
+        android:textStyle="bold"/>
 
     <ProgressBar
         android:id="@+id/id_pb_login"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerInParent="true"
         android:layout_marginBottom="10dp"
         android:visibility="gone" />
 
@@ -17,13 +30,15 @@
         android:id="@+id/id_btn_signIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp" />
+        android:layout_alignParentBottom="true" />
     <TextView
         android:id="@+id/id_tv_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/id_btn_signIn"
         android:clickable="true"
-        android:text=" Skip "/>
-</LinearLayout>
+        android:visibility="gone"
+        android:text=" Skip "
+        android:textSize="20dp"/>
+</RelativeLayout>

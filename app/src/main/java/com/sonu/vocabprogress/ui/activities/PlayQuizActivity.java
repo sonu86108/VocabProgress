@@ -5,14 +5,19 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Word;
+import com.sonu.vocabprogress.utilities.AppUtils;
+import com.sonu.vocabprogress.utilities.helpers.CloudDatabaseHelper;
+import com.sonu.vocabprogress.utilities.helpers.OnGetDataListener;
 import com.sonu.vocabprogress.utilities.helpers.QuizWordHelper;
 
 import java.io.BufferedReader;
@@ -26,33 +31,62 @@ public class PlayQuizActivity extends AppCompatActivity implements
         View.OnClickListener {
     int quizNumber = 0, totalQuiz = 10;
     String quizId;
+    CloudDatabaseHelper cloudDatabaseHelper;
     List<Word> quizWords;
     List<String> randomWords;
     List<RadioButton> radioButtons;
     QuizWordHelper quizWordHelper;
     TextView tvQuestion, tvqQNumber;
     String text = "Select the appropriate option for the word: ";
+    RelativeLayout layoutPlayQuiz;
     RadioGroup rgOptions;
     RadioButton rbOption1, rbOption2, rbOption3, rbOption4;
     Button btnNextQuiz, btnResult;
-    int checkedId, rightOption, score;
-    ;
+    ProgressBar pbPlayQuiz;
+    int  rightOption, score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_quiz);
+        if(getSupportActionBar()!=null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
         quizId = getQuizId();
-        quizWords = getQuizWords();
-        setQuiz();
+        loadQuizWordFromFirebase();
         btnNextQuiz.setOnClickListener(this);
         btnResult.setOnClickListener(this);
 
 
     }
+    private void loadQuizWordFromFirebase(){
+        cloudDatabaseHelper.readQuizWordsFromFirebase(getQuizId(), new OnGetDataListener() {
+            @Override
+            public void onStart() {
+            }
+
+            @Override
+            public void onSuccess(List<?> list) {
+              quizWords.addAll((ArrayList<Word>)list);
+              if(!quizWords.isEmpty()){
+                  pbPlayQuiz.setVisibility(View.GONE);
+                  layoutPlayQuiz.setVisibility(View.VISIBLE);
+                  setQuiz();
+              }else{
+                  finish();
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                AppUtils.toast(PlayQuizActivity.this,errorMessage);
+                finish();
+            }
+        });
+    }
 
     public void init() {
+        cloudDatabaseHelper=CloudDatabaseHelper.getInstance();
+        layoutPlayQuiz=findViewById(R.id.id_layout_playQuiz);
         tvQuestion = findViewById(R.id.id_tv_question);
         rgOptions = findViewById(R.id.id_rg_o);
         rbOption1 = findViewById(R.id.id_rb_o1);
@@ -64,11 +98,13 @@ public class PlayQuizActivity extends AppCompatActivity implements
         radioButtons.add(rbOption2);
         radioButtons.add(rbOption3);
         radioButtons.add(rbOption4);
+        pbPlayQuiz=findViewById(R.id.id_pb_playQuiz);
         tvqQNumber = findViewById(R.id.id_tv_qNumber);
         btnNextQuiz = findViewById(R.id.id_btn_next);
         btnResult = findViewById(R.id.id_btn_result);
         quizWordHelper = QuizWordHelper.getInstance(this);
         randomWords = new ArrayList<>();
+        quizWords=new ArrayList<>();
         loadWordsFromAssets();
 
     }
@@ -140,6 +176,12 @@ public class PlayQuizActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
+    }
+
     public String getQuizId() {
         return getIntent().getExtras().getString("quizId");
     }
@@ -174,6 +216,8 @@ public class PlayQuizActivity extends AppCompatActivity implements
         }
         return quizWords;
     }
+
+
 
 
 }

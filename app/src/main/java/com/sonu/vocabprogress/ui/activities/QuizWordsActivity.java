@@ -17,10 +17,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.sonu.vocabprogress.R;
+import com.sonu.vocabprogress.models.CloudQuizWord;
 import com.sonu.vocabprogress.models.Quiz;
 import com.sonu.vocabprogress.models.Word;
 import com.sonu.vocabprogress.ui.adapters.WordListAdapter;
 import com.sonu.vocabprogress.utilities.helpers.CloudDatabaseHelper;
+import com.sonu.vocabprogress.utilities.helpers.OnGetDataListener;
 import com.sonu.vocabprogress.utilities.helpers.QuizWordHelper;
 import com.sonu.vocabprogress.utilities.helpers.RecyclerViewTouchEventListener;
 
@@ -41,6 +43,7 @@ public class QuizWordsActivity extends AppCompatActivity implements RecyclerView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quizwords);
+        if(getSupportActionBar()!=null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
         initRecyclerView();
         if (getIntent() != null) {
@@ -71,6 +74,12 @@ public class QuizWordsActivity extends AppCompatActivity implements RecyclerView
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
+    }
+
+    @Override
     public void onRecyclerViewItemClick(View v, int p) {
 
     }
@@ -82,45 +91,32 @@ public class QuizWordsActivity extends AppCompatActivity implements RecyclerView
 
     public void updateWordList() {
         wordList.clear();
-        if(FirebaseAuth.getInstance().getCurrentUser() !=null){
-            readQuizFromFirebase(quizId);
-        }else {
-            readQuizFromLocalDb();
+        if(CloudDatabaseHelper.isSignedIn()){
+//            readQuizFromFirebase(quizId);
+            readData(quizId);
         }
-
     }
 
-    private void readQuizFromLocalDb(){
-        Cursor cursor = quizWordHelper.retrieveData(quizId);
-        if (cursor.moveToFirst()) {
-            do {
-                wordList.add(new Word(cursor.getString(0), cursor.getString(1),
-                        cursor.getString(2)));
-            } while (cursor.moveToNext());
-        } else {
-            Toast.makeText(this, "Words not found", Toast.LENGTH_LONG).
-                    show();
-        }
-        wordListAdapter.notifyDataSetChanged();
-    }
+    private void readData(String quizId){
+     cloudDatabaseHelper.readQuizWordsFromFirebase(quizId, new OnGetDataListener() {
+         @Override
+         public void onStart() {
+             pbQuizWords.setVisibility(View.VISIBLE);
+         }
 
-    private void readQuizFromFirebase(String quizId){
-        pbQuizWords.setVisibility(View.VISIBLE);
-        cloudDatabaseHelper.mDbQuizWordRef.child(quizId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds: dataSnapshot.getChildren()){
-                    wordList.add(ds.getValue(Word.class));
-                }
-                pbQuizWords.setVisibility(View.GONE);
-                wordListAdapter.notifyDataSetChanged();
-            }
+         @Override
+         public void onSuccess(List<?> list) {
+             wordList.addAll((ArrayList<Word>)list);
+             pbQuizWords.setVisibility(View.GONE);
+             wordListAdapter.notifyDataSetChanged();
+         }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                toast(databaseError.getMessage());
-            }
-        });
+         @Override
+         public void onFailure(String errorMessage) {
+             pbQuizWords.setVisibility(View.GONE);
+             toast(errorMessage);
+         }
+     });
     }
 private void toast(String msg){
         Toast.makeText(QuizWordsActivity.this,msg,Toast.LENGTH_SHORT).show();

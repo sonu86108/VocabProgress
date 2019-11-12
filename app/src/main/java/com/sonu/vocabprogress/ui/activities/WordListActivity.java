@@ -37,15 +37,14 @@ public class WordListActivity extends AppCompatActivity
     WordListAdapter wordListAdapter;
     FloatingActionButton fabAddWord;
     SQLiteHelper db;
-    Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wordlist);
         toolbar = findViewById(R.id.appbar);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_back);
         setSupportActionBar(toolbar);
+        if(getSupportActionBar() !=null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
         setListners();
     }
@@ -127,9 +126,9 @@ public class WordListActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        selectionMode.exitSelectionMode();
+    protected void onPause() {
+        super.onPause();
+        if (selectionMode.isInSelectionMode()) selectionMode.exitSelectionMode();
     }
 
     @Override
@@ -137,7 +136,7 @@ public class WordListActivity extends AppCompatActivity
         if (selectionMode.isInSelectionMode()) {
             selectionMode.exitSelectionMode();
         } else {
-            finish();
+            onBackPressed();
         }
         return true;
     }

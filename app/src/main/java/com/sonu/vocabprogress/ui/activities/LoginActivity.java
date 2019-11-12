@@ -23,25 +23,26 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.sonu.vocabprogress.R;
+import com.sonu.vocabprogress.utilities.helpers.CloudDatabaseHelper;
 import com.sonu.vocabprogress.utilities.sharedprefs.Prefs;
 
 public class LoginActivity extends AppCompatActivity
         implements View.OnClickListener {
     private final int RC_SIGN_IN = 123;
-    ProgressBar pbLogin;
-    SignInButton btnSignIn;
-    TextView tvSkip;
-    GoogleSignInClient mGoogleSignInClient;
+    private ProgressBar pbLogin;
+    private SignInButton btnSignIn;
+    private TextView tvSkip;
+    private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private SharedPreferences sharedPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        if(getSupportActionBar()!=null) getSupportActionBar().hide();
         sharedPrefs = getSharedPreferences(Prefs.SharedPrefs.APP_SETTINGS.toString(),MODE_PRIVATE);
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = CloudDatabaseHelper.getFirebaseAuth();
         tvSkip=findViewById(R.id.id_tv_skip);
         pbLogin = findViewById(R.id.id_pb_login);
         btnSignIn = findViewById(R.id.id_btn_signIn);
@@ -53,6 +54,10 @@ public class LoginActivity extends AppCompatActivity
         btnSignIn.setOnClickListener(this);
         tvSkip.setOnClickListener(this);
     }
+
+    private void init(){
+        CloudDatabaseHelper cloudDatabaseHelper=CloudDatabaseHelper.getInstance();
+    }
     @Override
     public void onClick(View p1) {
         switch (p1.getId()) {
@@ -60,7 +65,8 @@ public class LoginActivity extends AppCompatActivity
                 signIn();
                 break;
             case R.id.id_tv_skip:
-                startHomeActivity(Prefs.AppSettings.OFFLINE.toString());
+                finish();
+                //startHomeActivity(Prefs.AppSettings.OFFLINE.toString());
                 break;
         }
     }
@@ -137,7 +143,6 @@ public class LoginActivity extends AppCompatActivity
                     .contentEquals(Prefs.AppSettings.ONLINE.toString())) {
                 startHomeActivity();
             }else if(sharedPrefs.getString(Prefs.AppSettings.APP_MODE.toString(),null).contentEquals(Prefs.AppSettings.OFFLINE.toString())){
-                startHomeActivity();
             }
         }
 

@@ -42,6 +42,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        if(getSupportActionBar()!=null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
         AppMode();
         setOnClickListeners();
@@ -119,5 +120,11 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     private void snackBar(String msg){
         Snackbar.make(findViewById(R.id.id_layout_activity_settings),msg,Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
     }
 }

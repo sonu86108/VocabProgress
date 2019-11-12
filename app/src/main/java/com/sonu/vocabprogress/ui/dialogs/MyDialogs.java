@@ -27,14 +27,10 @@ import com.sonu.vocabprogress.utilities.SelectionMode;
 import com.sonu.vocabprogress.utilities.helpers.CloudDatabaseHelper;
 import com.sonu.vocabprogress.utilities.helpers.QuizHelper;
 import com.sonu.vocabprogress.utilities.helpers.QuizWordHelper;
-import com.sonu.vocabprogress.utilities.sharedprefs.Prefs;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import static com.sonu.vocabprogress.utilities.helpers.CloudDatabaseHelper.NODE_QUIZ_WORD;
 
 public class MyDialogs implements View.OnClickListener {
     Dialog dialog;
@@ -82,7 +78,7 @@ public class MyDialogs implements View.OnClickListener {
         quizName = edtQuizName.getText().toString().trim();
         switch (p1.getId()){
             case R.id.id_btn_save:
-                if(FirebaseAuth.getInstance().getCurrentUser() !=null){
+                if(CloudDatabaseHelper.isSignedIn()){
                     uploadDataToFirebase(new Quiz(quizName,date),getSeleectedWords());
                 }else{
                     if (quizHelper.insertData(new Quiz(quizName, date))) {
@@ -121,7 +117,7 @@ public class MyDialogs implements View.OnClickListener {
     private void uploadDataToFirebase(final Quiz quiz, final List<Word> words){
         pbMakeQuiz.setVisibility(View.VISIBLE);
         btnSave.setFocusable(false);
-         cloudDatabaseHelper.mDbQuizRef.addListenerForSingleValueEvent(new ValueEventListener() {
+         cloudDatabaseHelper.getdBQuizRef().addListenerForSingleValueEvent(new ValueEventListener() {
              boolean result=false;
              @Override
              public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -147,8 +143,8 @@ public class MyDialogs implements View.OnClickListener {
     }
 
     private void uploadQuizToFirebase(Quiz quiz, final List<Word> words){
-        final String quizKey=cloudDatabaseHelper.mDbQuizRef.push().getKey();
-        cloudDatabaseHelper.mDbQuizRef.child(quizKey).
+        final String quizKey=cloudDatabaseHelper.getdBQuizRef().push().getKey();
+        cloudDatabaseHelper.getdBQuizRef().child(quizKey).
                 setValue(quiz).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -166,7 +162,7 @@ public class MyDialogs implements View.OnClickListener {
     }
 
     private void uploadQuizWordsToFirebase( String quizKey,Word word) {
-        DatabaseReference quizDbRef=cloudDatabaseHelper.mDbQuizWordRef.child(quizKey);
+        DatabaseReference quizDbRef=cloudDatabaseHelper.getdBQuizWordRef().child(quizKey);
         quizDbRef.child(quizDbRef.push().getKey()).
                 setValue(word);
     }

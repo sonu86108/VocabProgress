@@ -23,6 +23,7 @@ import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Quiz;
 import com.sonu.vocabprogress.ui.adapters.QuizesAdapter;
 import com.sonu.vocabprogress.utilities.helpers.CloudDatabaseHelper;
+import com.sonu.vocabprogress.utilities.helpers.OnGetDataListener;
 import com.sonu.vocabprogress.utilities.helpers.QuizHelper;
 import com.sonu.vocabprogress.utilities.helpers.RecyclerViewTouchEventListener;
 
@@ -38,7 +39,7 @@ public class QuizesActivity extends AppCompatActivity implements
     TextView tvMsg;
     ProgressBar pbQuiz;
     boolean isItPlayMode;
-    List<Quiz> quizList;
+    ArrayList<Quiz> quizList;
     QuizHelper quizHelper;
     CloudDatabaseHelper cloudDatabaseHelper;
 
@@ -46,13 +47,14 @@ public class QuizesActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quizes);
+        if(getSupportActionBar()!=null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
         ifPlayMode();
         initRecyclerView();
     }
 
     private void init() {
-        quizList = new ArrayList<>();
+        quizList=new ArrayList<>();
         tvMsg=findViewById(R.id.id_tv_msg);
         pbQuiz=findViewById(R.id.id_pb_quiz);
         quizHelper = QuizHelper.getInstance(this);
@@ -77,11 +79,15 @@ public class QuizesActivity extends AppCompatActivity implements
 
     private void updateQuizList() {
         quizList.clear();
-        if(FirebaseAuth.getInstance().getCurrentUser() !=null){
-          readQuizFromFirebase();
-        }else {
-            readQuizFromLocalDb();
+        if(CloudDatabaseHelper.isSignedIn()){
+        readQuizDataFromFirebase();
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
     }
 
     @Override
@@ -114,35 +120,28 @@ public class QuizesActivity extends AppCompatActivity implements
         }
     }
 
-    private void readQuizFromLocalDb(){
-        Cursor cursor = quizHelper.retrieveData();
-        if (cursor.moveToFirst()) {
-            do {
-                quizList.add(new Quiz(String.valueOf(cursor.getInt(0)), cursor
-                        .getString(1), cursor.getString(2)));
-
-            } while (cursor.moveToNext());
-        }
-        quizesAdapter.notifyDataSetChanged();
-        onDataNotFoundMsg();
-    }
-
-    private void readQuizFromFirebase(){
-        pbQuiz.setVisibility(View.VISIBLE);
-        cloudDatabaseHelper.mDbQuizRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void readQuizDataFromFirebase() {
+        cloudDatabaseHelper.readQuizFromFirebase(new OnGetDataListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                   for(DataSnapshot ds: dataSnapshot.getChildren()){
-                       quizList.add(new Quiz(ds.getKey(),ds.getValue(Quiz.class).getQuizName(),ds.getValue(Quiz.class).getDate()));
-                   }
-                   pbQuiz.setVisibility(View.GONE);
-                   quizesAdapter.notifyDataSetChanged();
-                   onDataNotFoundMsg();
+            public void onStart() {
+                pbQuiz.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                    toast(databaseError.getMessage());
+            public void onSuccess(List<?> quizlist) {
+                for (Quiz quiz : (ArrayList<Quiz>) quizlist) {
+                    quizList.add(quiz);
+                }
+                quizesAdapter.notifyDataSetChanged();
+                pbQuiz.setVisibility(View.GONE);
+                onDataNotFoundMsg();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                pbQuiz.setVisibility(View.GONE);
+                toast(errorMessage);
+                onDataNotFoundMsg();
             }
         });
     }
@@ -157,4 +156,5 @@ public class QuizesActivity extends AppCompatActivity implements
             tvMsg.setVisibility(View.VISIBLE);
         }
     }
+
 }
