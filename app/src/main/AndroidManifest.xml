@@ -3,6 +3,7 @@
     package="com.sonu.vocabprogress">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:allowBackup="true"
@@ -50,7 +51,9 @@
             android:label="Result"
             android:name=".ui.activities.QuizResultActivity" />
 
-        <service android:name=".services.ClipBoardListenerService" />
+        <service android:name=".services.ClipBoardListenerService"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>

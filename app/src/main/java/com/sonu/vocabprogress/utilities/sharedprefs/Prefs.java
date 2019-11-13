@@ -1,9 +1,10 @@
 package com.sonu.vocabprogress.utilities.sharedprefs;
 
 public class Prefs {
-    public static enum SharedPrefs {APP_SETTINGS, USER_DETAILS;}
+    public  enum SharedPrefs {APP_SETTINGS,;}
 
-    public static enum AppSettings {MAIN_SWITCH_STATUS,APP_MODE,
+    public  enum AppSettings {MAIN_SWITCH_STATUS,APP_MODE,
+        SERVICE_RUNNING_STATUS,
         ONLINE,OFFLINE;}
 
 }

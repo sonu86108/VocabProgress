@@ -1,25 +1,23 @@
 package com.sonu.vocabprogress.ui.activities;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.core.content.ContextCompat;
 import com.sonu.vocabprogress.R;
-import com.sonu.vocabprogress.models.Word;
 import com.sonu.vocabprogress.services.ClipBoardListenerService;
+import com.sonu.vocabprogress.utilities.AppUtils;
+import com.sonu.vocabprogress.utilities.helpers.CloudDatabaseHelper;
 import com.sonu.vocabprogress.utilities.helpers.SQLiteHelper;
-import com.sonu.vocabprogress.utilities.sharedprefs.Prefs;
+import com.sonu.vocabprogress.utilities.sharedprefs.AppPrefs;
 import com.sonu.vocabprogress.utilities.tmp.AndroidDatabaseManager;
 
 
@@ -28,26 +26,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ActionBar actionBar;
     CardView cardViewSettings, cardViewWordList, cardViewQuizes,
             cardViewHelp, cardViewPlayQuiz, cardViewProgress;
-    Intent serviceIntent;
     SQLiteHelper db;
-    Word word;
     Switch mainSwitch;
-    SharedPreferences sharedPref;
-    SharedPreferences.Editor sharedPrefEditor;
+    AppPrefs appPrefs;
     TextView tvDisplayName;
-    boolean isOnlineMode=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(!CloudDatabaseHelper.isSignedIn()) finish();
         init();
         actionBar();
-        if(checkAppMode()){
-            isOnlineMode=true;
-            setDislplayName();
-        }
-        setOnclickListners();
+        setDisplayName();
+        setOnclickListeners();
     }
 
     @Override
@@ -76,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(playQuizIntent);
                 break;
             case R.id.id_cardView_progress:
-                showInSnackbar("Sorry, Not Available");
+                AppUtils.snackBar(findViewById(R.id.id_layout_mainLayout),"Not Available!");
                 break;
 
         }
@@ -84,20 +76,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onCheckedChanged(CompoundButton p1, boolean p2) {
+        Intent serviceIntent=new Intent(this,ClipBoardListenerService.class);
         if (p1.isChecked()) {
-            startService(serviceIntent);
-            sharedPrefEditor.putBoolean(Prefs.AppSettings.MAIN_SWITCH_STATUS.toString(), true).apply();
+            ContextCompat.startForegroundService(this,serviceIntent);
         } else {
             stopService(serviceIntent);
-            sharedPrefEditor.putBoolean(Prefs.AppSettings.MAIN_SWITCH_STATUS.toString(), false).apply();
-            Toast.makeText(MainActivity.this, "ClipBoardListenerService stopped", Toast.LENGTH_LONG).
-                    show();
         }
     }
 
     private void init() {
-        sharedPref = this.getSharedPreferences(Prefs.SharedPrefs.APP_SETTINGS.toString(), MODE_PRIVATE);
-        sharedPrefEditor = sharedPref.edit();
+        appPrefs=AppPrefs.getInstance(this);
         cardViewSettings = findViewById(R.id.id_cardView_settings);
         cardViewWordList = findViewById(R.id.id_cardView_WordList);
         cardViewQuizes = findViewById(R.id.id_cardView_Quizes);
@@ -106,10 +94,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cardViewProgress = findViewById(R.id.id_cardView_progress);
         tvDisplayName = findViewById(R.id.id_tv_displayName);
         db = SQLiteHelper.getSQLiteHelper(this);
-        serviceIntent = new Intent(MainActivity.this, ClipBoardListenerService.class);
     }
 
-    private void setOnclickListners() {
+    private void setOnclickListeners() {
         cardViewSettings.setOnClickListener(this);
         cardViewWordList.setOnClickListener(this);
         cardViewQuizes.setOnClickListener(this);
@@ -119,28 +106,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainSwitch.setOnCheckedChangeListener(this);
     }
 
-    private void setDislplayName() {
-        if(FirebaseAuth.getInstance().getCurrentUser() !=null && FirebaseAuth.getInstance().getCurrentUser().getDisplayName() !=null){
-            tvDisplayName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+    private void setDisplayName() {
+        if(CloudDatabaseHelper.getUserDisplayName() !=null){
+            tvDisplayName.setText(CloudDatabaseHelper.getUserDisplayName());
         }
-    }
-
-    public void showToast(String msg) {
-        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
-    }
-
-    public void showInSnackbar(String msg) {
-        Snackbar.make(findViewById(R.id.id_layout_mainLayout), msg, Snackbar.
-                LENGTH_SHORT).show();
-    }
-    private boolean checkAppMode(){
-        if( sharedPref.getString(Prefs.AppSettings.APP_MODE.toString(),null) !=null &&
-                sharedPref.getString(Prefs.AppSettings.APP_MODE.toString(),"n/a").equals(Prefs.AppSettings.ONLINE.toString())){
-            return true;
-        }else {
-            return false;
-        }
-
     }
 
 
@@ -157,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loadUserPrefs() {
-        if (sharedPref.getBoolean(Prefs.AppSettings.MAIN_SWITCH_STATUS.toString(), false)) {
+        if (appPrefs.isServiceRunning()) {
             mainSwitch.setChecked(true);
         } else {
             mainSwitch.setChecked(false);

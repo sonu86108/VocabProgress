@@ -92,8 +92,11 @@ public class CloudDatabaseHelper {
     public static FirebaseAuth getFirebaseAuth(){
         return FirebaseAuth.getInstance();
     }
-    public String getUserDisplayName(){
-        return userDisplayName;
+    public static String getUserDisplayName(){
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null && FirebaseAuth.getInstance().getCurrentUser().getDisplayName() !=null){
+            return FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        }
+        return null;
     }
     public DatabaseReference getdBQuizRef(){
         return dBQuizRef;
