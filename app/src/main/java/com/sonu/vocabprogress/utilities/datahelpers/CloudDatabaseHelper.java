@@ -1,4 +1,4 @@
-package com.sonu.vocabprogress.utilities.helpers;
+package com.sonu.vocabprogress.utilities.datahelpers;
 
 
 import androidx.annotation.NonNull;
@@ -8,9 +8,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.sonu.vocabprogress.models.CloudQuizWord;
 import com.sonu.vocabprogress.models.Quiz;
 import com.sonu.vocabprogress.models.Word;
+import com.sonu.vocabprogress.utilities.datahelpers.interfaces.OnGetDataListener;
+
 import java.util.ArrayList;
 import java.util.List;
 

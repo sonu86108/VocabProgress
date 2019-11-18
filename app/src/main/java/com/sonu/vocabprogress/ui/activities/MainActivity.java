@@ -1,9 +1,9 @@
 package com.sonu.vocabprogress.ui.activities;
 
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -14,9 +14,10 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.services.ClipBoardListenerService;
+import com.sonu.vocabprogress.ui.activities.words.WordListActivity;
 import com.sonu.vocabprogress.utilities.AppUtils;
-import com.sonu.vocabprogress.utilities.helpers.CloudDatabaseHelper;
-import com.sonu.vocabprogress.utilities.helpers.SQLiteHelper;
+import com.sonu.vocabprogress.utilities.datahelpers.CloudDatabaseHelper;
+import com.sonu.vocabprogress.utilities.datahelpers.SQLiteHelper;
 import com.sonu.vocabprogress.utilities.sharedprefs.AppPrefs;
 import com.sonu.vocabprogress.utilities.tmp.AndroidDatabaseManager;
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View p1) {
         switch (p1.getId()) {
             case R.id.id_cardView_settings:
-                startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
 
             case R.id.id_cardView_WordList:
@@ -82,6 +83,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             stopService(serviceIntent);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_activity_main,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==R.id.id_menu_item_settings){
+            startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+        }
+       return true;
     }
 
     private void init() {
@@ -126,9 +141,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loadUserPrefs() {
-        if (appPrefs.isServiceRunning()) {
+        if(ClipBoardListenerService.isRunning){
             mainSwitch.setChecked(true);
-        } else {
+        }else {
             mainSwitch.setChecked(false);
         }
     }

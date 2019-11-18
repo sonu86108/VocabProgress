@@ -1,31 +1,25 @@
 package com.sonu.vocabprogress.ui.activities;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.common.util.ClientLibraryUtils;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Quiz;
 import com.sonu.vocabprogress.ui.adapters.QuizesAdapter;
-import com.sonu.vocabprogress.utilities.helpers.CloudDatabaseHelper;
-import com.sonu.vocabprogress.utilities.helpers.OnGetDataListener;
-import com.sonu.vocabprogress.utilities.helpers.QuizHelper;
-import com.sonu.vocabprogress.utilities.helpers.RecyclerViewTouchEventListener;
+import com.sonu.vocabprogress.utilities.datahelpers.CloudDatabaseHelper;
+import com.sonu.vocabprogress.utilities.datahelpers.interfaces.OnGetDataListener;
+import com.sonu.vocabprogress.utilities.datahelpers.QuizHelper;
+import com.sonu.vocabprogress.utilities.datahelpers.interfaces.RecyclerViewTouchEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +102,7 @@ public class QuizesActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onRecyclerViewItemLongClick(View v, int p) {
+    public void onRecyclerViewItemLongClick(View v, ImageView menu, int p) {
 
     }
 

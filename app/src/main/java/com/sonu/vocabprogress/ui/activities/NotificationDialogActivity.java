@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Word;
-import com.sonu.vocabprogress.utilities.helpers.SQLiteHelper;
+import com.sonu.vocabprogress.utilities.datahelpers.SQLiteHelper;
 
 public class NotificationDialogActivity extends AppCompatActivity
         implements View.OnClickListener {

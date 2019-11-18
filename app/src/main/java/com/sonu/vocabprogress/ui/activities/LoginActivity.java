@@ -19,7 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.utilities.AppUtils;
-import com.sonu.vocabprogress.utilities.helpers.CloudDatabaseHelper;
+import com.sonu.vocabprogress.utilities.datahelpers.CloudDatabaseHelper;
 
 
 public class LoginActivity extends AppCompatActivity

@@ -16,7 +16,7 @@
             android:name=".ui.activities.SettingsActivity"></activity>
         <activity
             android:label="Words"
-            android:name=".ui.activities.WordListActivity"
+            android:name=".ui.activities.words.WordListActivity"
             android:parentActivityName=".ui.activities.MainActivity"
             android:theme="@style/Theme.NoActionBar">
             <meta-data

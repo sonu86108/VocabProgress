@@ -1,28 +1,29 @@
-package com.sonu.vocabprogress.ui.activities;
+package com.sonu.vocabprogress.ui.activities.words;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Word;
+import com.sonu.vocabprogress.ui.activities.NotificationDialogActivity;
+import com.sonu.vocabprogress.ui.activities.SettingsActivity;
 import com.sonu.vocabprogress.ui.adapters.WordListAdapter;
+import com.sonu.vocabprogress.utilities.AppUtils;
 import com.sonu.vocabprogress.utilities.SelectionMode;
-import com.sonu.vocabprogress.utilities.helpers.RecyclerViewTouchEventListener;
-import com.sonu.vocabprogress.utilities.helpers.SQLiteHelper;
-
+import com.sonu.vocabprogress.utilities.datahelpers.interfaces.RecyclerViewTouchEventListener;
+import com.sonu.vocabprogress.utilities.datahelpers.SQLiteHelper;
+import com.sonu.vocabprogress.utilities.datahelpers.interfaces.DataFetcher;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,10 +34,12 @@ public class WordListActivity extends AppCompatActivity
     SelectionMode selectionMode;
     Toolbar toolbar;
     RecyclerView wordListRecyclerView;
+    TextView tvMsg;
     List<Word> wordList;
     WordListAdapter wordListAdapter;
     FloatingActionButton fabAddWord;
     SQLiteHelper db;
+    ViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +49,17 @@ public class WordListActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         if(getSupportActionBar() !=null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
-        setListners();
+        setListeners();
     }
 
     public void init() {
         wordListRecyclerView = findViewById(R.id.id_recyclerview_wordlist);
         selectionMode = new SelectionMode(this);
         fabAddWord = findViewById(R.id.id_fab);
+        tvMsg=findViewById(R.id.id_tv_msg);
         db = SQLiteHelper.getSQLiteHelper(this);
-        wordList = new ArrayList<Word>();
+        viewModel=new ViewModel(this);
+        wordList = new ArrayList<>();
         initRecyView();
     }
 
@@ -81,17 +86,15 @@ public class WordListActivity extends AppCompatActivity
         if (selectionMode.isInSelectionMode()) {
             selectionMode.onClick(v, position);
         } else {
-            Word word = wordList.get(position);
-            String s = word.getWordName() + "\n" +
-                    word.getWordMeaning() + "\n" +
-                    word.getWordDesc() + "\n" + position;
-            Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+            if(v.getId()==R.id.id_more_menu_word){
+
+            }
         }
     }
 
     @Override
-    public void onRecyclerViewItemLongClick(View v, int p) {
-        selectionMode.enterInSelectionMode(fabAddWord, toolbar, wordList);
+    public void onRecyclerViewItemLongClick(View v, ImageView menu, int p) {
+        selectionMode.enterInSelectionMode(fabAddWord, menu,toolbar, wordList);
         selectionMode.onLongClick(v, p);
     }
 
@@ -105,6 +108,10 @@ public class WordListActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         if (selectionMode.isInSelectionMode()) {
             selectionMode.onOptionsItemSelected(item);
+        }else if(item.getItemId()==R.id.id_menu_word_activity_settings){
+            startActivity(new Intent(WordListActivity.this, SettingsActivity.class));
+        }else if(item.getItemId()==R.id.id_menu_word_activity_help){
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -114,7 +121,7 @@ public class WordListActivity extends AppCompatActivity
         super.onActivityResult(requestCode,resultCode,data);
         if (requestCode == 24) {
             if (resultCode == RESULT_OK) {
-                updateWordList();
+            updateWordList();
             }
         }
     }
@@ -124,6 +131,7 @@ public class WordListActivity extends AppCompatActivity
         super.onStart();
         updateWordList();
     }
+
 
     @Override
     protected void onPause() {
@@ -141,27 +149,45 @@ public class WordListActivity extends AppCompatActivity
         return true;
     }
 
-    private void setListners() {
+    private void setListeners() {
         fabAddWord.setOnClickListener(this);
     }
 
-    public void updateWordList() {
-        Cursor curso = db.retrieveData();
-        wordList.clear();
-        if (curso.moveToFirst()) {
-            do {
-                wordList.add(new Word(curso.getString(1), curso.getString(2), curso.getString(3)));
-            } while (curso.moveToNext());
-        }
-        wordListAdapter.notifyDataSetChanged();
+
+
+    public void updateWordList(){
+        viewModel.fetchWordData(new DataFetcher() {
+            @Override
+            public void onStart() {
+                wordListRecyclerView.setVisibility(View.VISIBLE);
+                tvMsg.setVisibility(View.GONE);
+                wordList.clear();
+            }
+
+            @Override
+            public void onSuccess(List<?> list) {
+              wordList.addAll((ArrayList<Word>)list);
+              wordListAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure() {
+               onDataNotFound();
+            }
+        });
     }
 
     public void showInSnackBar(String msg) {
-        Snackbar.make(findViewById(R.id.id_layout_activity_wordlist),
-                msg, Snackbar.LENGTH_LONG).show();
+        AppUtils.snackBar(findViewById(R.id.id_layout_activity_wordlist),msg);
     }
 
     public void showInToast(String msg) {
         Toast.makeText(WordListActivity.this, "", Toast.LENGTH_LONG).show();
+    }
+    private void onDataNotFound(){
+        if(wordList.isEmpty()){
+            wordListRecyclerView.setVisibility(View.GONE);
+            tvMsg.setVisibility(View.VISIBLE);
+        }
     }
 }

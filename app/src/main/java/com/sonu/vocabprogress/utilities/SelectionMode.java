@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
@@ -12,9 +13,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Word;
-import com.sonu.vocabprogress.ui.activities.WordListActivity;
+import com.sonu.vocabprogress.ui.activities.words.WordListActivity;
 import com.sonu.vocabprogress.ui.dialogs.MyDialogs;
-import com.sonu.vocabprogress.utilities.helpers.SQLiteHelper;
+import com.sonu.vocabprogress.utilities.datahelpers.SQLiteHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public class SelectionMode {
     private List<Word> wordList;
     private List<Integer> selectedWordList;
     private List<View> selectedWordView;
+    private ImageView moreOptions;
 
     public SelectionMode(Context context) {
         this.wordListActivity = (WordListActivity) context;
@@ -71,12 +73,14 @@ public class SelectionMode {
 
     }
 
-    public void enterInSelectionMode(FloatingActionButton fab,
+    public void enterInSelectionMode(FloatingActionButton fab,ImageView moreOptions,
                                      Toolbar toolbar, List<Word> words) {
         isInSelectionMode = true;
         this.fab = fab;
         this.toolbar = toolbar;
         this.wordList = words;
+        this.moreOptions=moreOptions;
+        moreOptions.setVisibility(View.GONE);
         toolbar.getMenu().clear();
         toolbar.inflateMenu(R.menu.menu_selection_mode);
         fab.setVisibility(View.GONE);
@@ -85,6 +89,7 @@ public class SelectionMode {
 
     public void exitSelectionMode() {
         isInSelectionMode = false;
+        moreOptions.setVisibility(View.VISIBLE);
         for (View v : selectedWordView) {
             v.setBackground(background);
             v.setEnabled(true);

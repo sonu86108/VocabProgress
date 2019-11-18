@@ -1,9 +1,6 @@
-package com.sonu.vocabprogress.utilities.helpers;
+package com.sonu.vocabprogress.utilities.datahelpers.interfaces;
 
 
-import com.sonu.vocabprogress.models.Quiz;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public interface OnGetDataListener {

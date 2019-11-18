@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Quiz;
-import com.sonu.vocabprogress.utilities.helpers.RecyclerViewTouchEventListener;
+import com.sonu.vocabprogress.utilities.datahelpers.interfaces.RecyclerViewTouchEventListener;
 
 import java.util.List;
 

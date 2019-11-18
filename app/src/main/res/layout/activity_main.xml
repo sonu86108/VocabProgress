@@ -27,7 +27,7 @@
             android:id="@+id/id_tv_displayName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -65,19 +65,19 @@
                 android:layout_margin="16dp"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/me_time" />
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_horizontal"-->
+<!--                    android:src="@drawable/me_time" />-->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Words"
                     android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -104,19 +104,19 @@
                 android:layout_margin="16dp"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/family_time" />
+<!--                <ImageView-->
+<!--                    android:layout_width="100dp"-->
+<!--                    android:layout_height="100dp"-->
+<!--                    android:layout_gravity="center_horizontal"-->
+<!--                    android:src="@drawable/ic_quizes" />-->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Quizes"
                     android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -146,19 +146,19 @@
                 android:layout_margin="16dp"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/lovely_time" />
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_horizontal"-->
+<!--                    android:src="@drawable/lovely_time" />-->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Play Quiz"
                     android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -185,19 +185,19 @@
                 android:layout_margin="16dp"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/team_time" />
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_horizontal"-->
+<!--                    android:src="@drawable/team_time" />-->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Progress"
                     android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -227,19 +227,19 @@
                 android:layout_margin="16dp"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/friends" />
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_horizontal"-->
+<!--                    android:src="@drawable/friends" />-->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Settings"
                     android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -266,19 +266,19 @@
                 android:layout_margin="16dp"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/calendar" />
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_horizontal"-->
+<!--                    android:src="@drawable/calendar" />-->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="  Help"
                     android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
             </LinearLayout>

@@ -16,9 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Word;
 import com.sonu.vocabprogress.utilities.AppUtils;
-import com.sonu.vocabprogress.utilities.helpers.CloudDatabaseHelper;
-import com.sonu.vocabprogress.utilities.helpers.OnGetDataListener;
-import com.sonu.vocabprogress.utilities.helpers.QuizWordHelper;
+import com.sonu.vocabprogress.utilities.datahelpers.CloudDatabaseHelper;
+import com.sonu.vocabprogress.utilities.datahelpers.interfaces.OnGetDataListener;
+import com.sonu.vocabprogress.utilities.datahelpers.QuizWordHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;

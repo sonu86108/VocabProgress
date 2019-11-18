@@ -29,7 +29,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.sonu.vocabprogress.utilities.helpers.SQLiteHelper;
+import com.sonu.vocabprogress.utilities.datahelpers.SQLiteHelper;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

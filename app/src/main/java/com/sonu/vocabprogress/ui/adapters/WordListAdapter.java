@@ -3,6 +3,7 @@ package com.sonu.vocabprogress.ui.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Word;
-import com.sonu.vocabprogress.utilities.helpers.RecyclerViewTouchEventListener;
+import com.sonu.vocabprogress.utilities.datahelpers.interfaces.RecyclerViewTouchEventListener;
 
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordLi
         public TextView name, meaning, desc;
         RecyclerViewTouchEventListener eventListener;
         CardView cardView;
+        ImageView moreOptionsWord;
 
         public WordListViewHolder(View view, RecyclerViewTouchEventListener eventListener) {
             super(view);
@@ -61,10 +63,11 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordLi
             name = view.findViewById(R.id.id_textview_word);
             meaning = view.findViewById(R.id.id_textview_meaning);
             desc = view.findViewById(R.id.id_textview_desc);
-            //desc.setVisibility(View.GONE);
+            moreOptionsWord=view.findViewById(R.id.id_more_menu_word);
             cardView = view.findViewById(R.id.id_cardView);
             cardView.setOnLongClickListener(this);
             cardView.setOnClickListener(this);
+            moreOptionsWord.setOnClickListener(this);
         }
 
         @Override
@@ -74,7 +77,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordLi
 
         @Override
         public boolean onLongClick(View v) {
-            eventListener.onRecyclerViewItemLongClick(v, getAdapterPosition());
+            eventListener.onRecyclerViewItemLongClick(v,moreOptionsWord, getAdapterPosition());
             return true;
         }
 

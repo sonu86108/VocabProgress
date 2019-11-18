@@ -1,9 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
+    <item android:title="Settings"
+        android:id="@+id/id_menu_word_activity_settings"/>
     <item
-        android:id="@+id/item"
-        android:title="Item" />
-    <item android:title="Item" />
-
+    android:id="@+id/id_menu_word_activity_help"
+    android:title="Help" />
 </menu>

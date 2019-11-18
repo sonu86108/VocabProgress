@@ -1,15 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res_auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/id_item_delete"
         android:icon="@drawable/ic_delete"
         android:title="Delete"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/id_it_makeQuiz"
-        android:title="Make Quiz" />
+        android:title="Make Quiz"
+        android:icon="@android:drawable/ic_menu_add"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/item"
-        android:title="Item" />
+        android:title="Help" />
 </menu>

@@ -20,27 +20,25 @@ import com.sonu.vocabprogress.models.Word;
 import com.sonu.vocabprogress.ui.activities.LoginActivity;
 import com.sonu.vocabprogress.ui.activities.NotificationDialogActivity;
 import com.sonu.vocabprogress.utilities.AppUtils;
-import com.sonu.vocabprogress.utilities.helpers.SQLiteHelper;
+import com.sonu.vocabprogress.utilities.datahelpers.SQLiteHelper;
 import com.sonu.vocabprogress.utilities.sharedprefs.AppPrefs;
-
-import java.util.FormatFlagsConversionMismatchException;
 
 public class ClipBoardListenerService extends Service {
     ClipboardManager clipBoardManager;
+    public static boolean isRunning=false;
     SQLiteHelper db;
     private final String FOREGROUND_SERVICE_CHANNEL_ID="foregroundService";
 
     @Override
     public IBinder onBind(Intent p1) {
-        // TODO: Implement this method
         return null;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        isRunning=true;
         AppPrefs.getInstance(this).setServiceRunningStatus(true);
-        // TODO: Implement this method
-        showForegroundServiceInNotification();
+        showForegroundServiceNotification();
         db = SQLiteHelper.getSQLiteHelper(this);
         AppUtils.toast(getApplicationContext(),"Clipboard service started");
         clipBoardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -63,28 +61,24 @@ public class ClipBoardListenerService extends Service {
         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(getApplicationContext());
         nBuilder.setSmallIcon(R.drawable.ic_launcher_background);
         nBuilder.setContentTitle(msg);
-
         Intent intent = new Intent(ClipBoardListenerService.this, NotificationDialogActivity.class);
         intent.putExtra("word", msg);
         PendingIntent pi =
                 PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         nBuilder.addAction(android.R.drawable.ic_menu_view, "Edit", pi);
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
             String channelId = "your channel id";
             NotificationChannel nc = new NotificationChannel(channelId, "mytag", NotificationManager.IMPORTANCE_DEFAULT);
             nm.createNotificationChannel(nc);
             nBuilder.setChannelId(channelId);
         }
         nm.notify(nid, nBuilder.build());
-
     }
 
     @Override
     public void onDestroy() {
-        // TODO: Implement this method
+        isRunning=false;
         super.onDestroy();
         AppPrefs.getInstance(this).setServiceRunningStatus(false);
         AppUtils.toast(this,"ClipBoardChangeService stopped");
@@ -93,15 +87,13 @@ public class ClipBoardListenerService extends Service {
     //validate copied word if exists or new
     public void saveToDb(String text) {
         try {
-            if (db.insertData(new Word(text, "n/a", "n/a"))) {
-                AppUtils.toast(this,"ClipBoardChangeListener service started");
-            }
+            db.insertData(new Word(text, "n/a", "n/a"));
         } catch (SQLiteConstraintException e) {
-            Toast.makeText(this, "Text already exits", Toast.LENGTH_SHORT).show();
+           e.printStackTrace();
         }
     }
 
-    private void showForegroundServiceInNotification(){
+    private void showForegroundServiceNotification(){
         createNotificationChannel();
         Intent intent=new Intent(ClipBoardListenerService.this, LoginActivity.class);
         PendingIntent pendingIntent=PendingIntent.getActivity(this,2,intent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -110,7 +102,6 @@ public class ClipBoardListenerService extends Service {
         .setContentText("Clipboard service is running")
         .setContentIntent(pendingIntent)
         .build();
-
         startForeground(1,nb);
     }
 

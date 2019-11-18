@@ -1,4 +1,4 @@
-package com.sonu.vocabprogress.utilities.helpers;
+package com.sonu.vocabprogress.utilities.datahelpers;
 
 import android.content.ContentValues;
 import android.content.Context;
