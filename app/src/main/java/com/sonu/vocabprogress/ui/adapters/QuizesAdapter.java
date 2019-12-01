@@ -35,6 +35,7 @@ public class QuizesAdapter extends RecyclerView.Adapter<QuizesAdapter.QuizesView
 
     @Override
     public void onBindViewHolder(QuizesViewHolder p1, int p2) {
+        p1.setIsRecyclable(false);
         p1.tvQuizName.setText(quizList.get(p2).getQuizName());
         p1.tvQuizDate.setText(quizList.get(p2).getDate());
     }

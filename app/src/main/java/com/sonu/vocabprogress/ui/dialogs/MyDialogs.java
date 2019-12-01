@@ -21,11 +21,13 @@ import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Quiz;
 import com.sonu.vocabprogress.models.QuizWord;
 import com.sonu.vocabprogress.models.Word;
-import com.sonu.vocabprogress.ui.activities.words.WordListActivity;
-import com.sonu.vocabprogress.utilities.SelectionMode;
+import com.sonu.vocabprogress.ui.activities.words.WordsActivity;
+import com.sonu.vocabprogress.ui.activities.words.SelectionMode;
 import com.sonu.vocabprogress.utilities.datahelpers.CloudDatabaseHelper;
 import com.sonu.vocabprogress.utilities.datahelpers.QuizHelper;
 import com.sonu.vocabprogress.utilities.datahelpers.QuizWordHelper;
+import com.sonu.vocabprogress.utilities.datahelpers.SQLiteHelper;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +35,7 @@ import java.util.Locale;
 
 public class MyDialogs implements View.OnClickListener {
     Dialog dialog;
-    WordListActivity context;
+    WordsActivity context;
     SelectionMode selectionMode;
     EditText edtQuizName;
     ProgressBar pbMakeQuiz;
@@ -47,7 +49,7 @@ public class MyDialogs implements View.OnClickListener {
     CloudDatabaseHelper cloudDatabaseHelper;
 
     public MyDialogs(Context context, SelectionMode selectionMode, List<Word> wordList, List<Integer> selectedWords) {
-        this.context = (WordListActivity) context;
+        this.context = (WordsActivity) context;
         this.selectionMode = selectionMode;
         this.wordList = wordList;
         dialog = new Dialog(context);
@@ -165,6 +167,7 @@ public class MyDialogs implements View.OnClickListener {
         quizDbRef.child(quizDbRef.push().getKey()).
                 setValue(word);
     }
+
 
 
 }

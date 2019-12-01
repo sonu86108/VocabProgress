@@ -11,15 +11,15 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Build;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Word;
 import com.sonu.vocabprogress.ui.activities.LoginActivity;
-import com.sonu.vocabprogress.ui.activities.NotificationDialogActivity;
+import com.sonu.vocabprogress.ui.activities.updateword.UpdateWordDialogActivity;
 import com.sonu.vocabprogress.utilities.AppUtils;
+import com.sonu.vocabprogress.utilities.constants.Consts;
 import com.sonu.vocabprogress.utilities.datahelpers.SQLiteHelper;
 import com.sonu.vocabprogress.utilities.sharedprefs.AppPrefs;
 
@@ -56,13 +56,14 @@ public class ClipBoardListenerService extends Service {
         return START_NOT_STICKY;
     }
 
-    public void makeNotification(String msg) {
+    public void makeNotification(String word) {
         int nid = 0;
         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(getApplicationContext());
         nBuilder.setSmallIcon(R.drawable.ic_launcher_background);
-        nBuilder.setContentTitle(msg);
-        Intent intent = new Intent(ClipBoardListenerService.this, NotificationDialogActivity.class);
-        intent.putExtra("word", msg);
+        nBuilder.setContentTitle(word);
+        Intent intent = new Intent(ClipBoardListenerService.this, UpdateWordDialogActivity.class);
+        intent.setAction(Consts.Action.UPDATE_LOCAL.toString());
+        intent.putExtra(Consts.extras.WORD_SERIALIZABEL.toString(),new Word(word));
         PendingIntent pi =
                 PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         nBuilder.addAction(android.R.drawable.ic_menu_view, "Edit", pi);
@@ -76,6 +77,7 @@ public class ClipBoardListenerService extends Service {
         nm.notify(nid, nBuilder.build());
     }
 
+
     @Override
     public void onDestroy() {
         isRunning=false;
@@ -87,7 +89,7 @@ public class ClipBoardListenerService extends Service {
     //validate copied word if exists or new
     public void saveToDb(String text) {
         try {
-            db.insertData(new Word(text, "n/a", "n/a"));
+            db.insertData(new Word(text));
         } catch (SQLiteConstraintException e) {
            e.printStackTrace();
         }

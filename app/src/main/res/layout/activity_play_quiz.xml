@@ -102,6 +102,7 @@
 
             <Button
                 android:id="@+id/id_btn_result"
+                android:background="@drawable/rounded_backgrond"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"

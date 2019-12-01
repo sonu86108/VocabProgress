@@ -4,6 +4,7 @@
 
     <TextView
         android:id="@+id/id_tv_showScore"
+        android:textColor="@color/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -12,6 +13,7 @@
         android:textStyle="bold" />
 
     <TextView
+        android:textColor="@color/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/id_tv_showScore"
@@ -31,12 +33,14 @@
 
         <Button
             android:id="@+id/id_btn_ok"
+            android:background="@drawable/rounded_backgrond"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ok" />
 
         <Button
             android:id="@+id/id_btn_restart"
+            android:background="@drawable/rounded_backgrond"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"

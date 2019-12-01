@@ -1,11 +1,15 @@
 package com.sonu.vocabprogress.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Word;
+import com.sonu.vocabprogress.ui.activities.updateword.UpdateWordDialogActivity;
 import com.sonu.vocabprogress.ui.adapters.WordListAdapter;
+import com.sonu.vocabprogress.utilities.constants.Consts;
 import com.sonu.vocabprogress.utilities.datahelpers.CloudDatabaseHelper;
 import com.sonu.vocabprogress.utilities.datahelpers.interfaces.OnGetDataListener;
 import com.sonu.vocabprogress.utilities.datahelpers.QuizWordHelper;
@@ -23,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuizWordsActivity extends AppCompatActivity implements RecyclerViewTouchEventListener {
-
+    public static int REQUEST_CODE=123;
     RecyclerView quizWordsRecyclerView;
     WordListAdapter wordListAdapter;
     List<Word> wordList;
@@ -67,14 +73,41 @@ public class QuizWordsActivity extends AppCompatActivity implements RecyclerView
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        updateWordList();
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
         super.onBackPressed();
         return true;
     }
 
     @Override
-    public void onRecyclerViewItemClick(View v, int p) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK && requestCode==REQUEST_CODE && data!=null){
+            
+        }
+    }
 
+    @Override
+    public void onRecyclerViewItemClick(View v, final int p) {
+          if(v.getId()==R.id.id_more_menu_word){
+              PopupMenu menu=new PopupMenu(this,v);
+              menu.getMenu().add(R.string.menu_item_edit).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                  @Override
+                  public boolean onMenuItemClick(MenuItem item) {
+                      Intent intent=new Intent(QuizWordsActivity.this, UpdateWordDialogActivity.class);
+                      intent.putExtra(Consts.extras.WORD_SERIALIZABEL.toString(),wordList.get(p));
+                      intent.setAction(Consts.Action.UPDATE_CLOUD.toString());
+                      startActivityForResult(intent,REQUEST_CODE);
+                      return true;
+                  }
+              });
+              menu.show();
+          }
     }
 
     @Override
@@ -83,9 +116,7 @@ public class QuizWordsActivity extends AppCompatActivity implements RecyclerView
     }
 
     public void updateWordList() {
-        wordList.clear();
         if(CloudDatabaseHelper.isSignedIn()){
-//            readQuizFromFirebase(quizId);
             readData(quizId);
         }
     }
@@ -99,6 +130,7 @@ public class QuizWordsActivity extends AppCompatActivity implements RecyclerView
 
          @Override
          public void onSuccess(List<?> list) {
+             wordList.clear();
              wordList.addAll((ArrayList<Word>)list);
              pbQuizWords.setVisibility(View.GONE);
              wordListAdapter.notifyDataSetChanged();

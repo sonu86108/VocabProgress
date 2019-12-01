@@ -37,8 +37,7 @@
         <ImageView
             android:id="@+id/id_more_menu_word"
             android:layout_width="20dp"
-            android:layout_height="45dp"
-            android:layout_alignParentTop="true"
+            android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -48,7 +47,7 @@
             android:layout_marginRight="-10dp"
             android:layout_toEndOf="@id/id_textview_meaning"
             android:layout_toRightOf="@id/id_textview_meaning"
-            android:src="@drawable/ic_more_vert_black_24dp" />
+            android:src="@drawable/ic_more_vert_black_15dp" />
 
         <TextView
             android:id="@+id/id_textview_desc"

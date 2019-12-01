@@ -48,6 +48,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return sqliteHelper;
     }
 
+
+
     @Override
     public void onCreate(SQLiteDatabase p1) {
         p1.execSQL("CREATE TABLE " + TN_WORD + " (" + C1_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -66,93 +68,45 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         p1.execSQL("DROP TABLE IF EXISTS " + TN_QUIZ_WORD_LIST);
     }
 
-
-    //Insert word data
-    public boolean insertData(Word word) throws SQLiteConstraintException {
-        SQLiteDatabase writableDb = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        long result = -1;
-        try {
-            if (word != null) {
-                if (word.getWordName() != null && word.getWordMeaning() != null && word.getWordDesc() != null) {
-                    values.put(C2_NAME, word.getWordName());
-                    String meaning = word.getWordMeaning() != null ? word.getWordMeaning() : "N/A";
-                    String desc = word.getWordDesc() != null ? word.getWordDesc() : "N/A";
-                    values.put(C3_MEANING, meaning);
-                    values.put(C4_DESC, desc);
-                    //It throws exception to handle
-                    writableDb.insertOrThrow(TN_WORD, null, values);
-
-
-                } else if (word.getWordName() != null && word.getWordMeaning() != null) {
-                    values.put(C2_NAME, word.getWordName());
-                    values.put(C3_MEANING, word.getWordMeaning());
-                    writableDb.insertOrThrow(TN_WORD, null, values);
-
-
-                } else if (word.getWordName() != null && word.getWordDesc() != null) {
-                    values.put(C2_NAME, word.getWordName());
-                    values.put(C4_DESC, word.getWordDesc());
-                    writableDb.insertOrThrow(TN_WORD, null, values);
-
-                } else {
-                    values.put(C2_NAME, word.getWordName());
-                    writableDb.insertOrThrow(TN_WORD, null, values);
-                }
+    //INSERT WORD DATA
+    public boolean insertData(Word word) throws SQLiteConstraintException{
+        SQLiteDatabase writableDb=getWritableDatabase();
+        ContentValues values=new ContentValues();
+        if(word!=null){
+            values.put(C2_NAME,word.getWordName());
+            values.put(C3_MEANING,word.getWordMeaning());
+            values.put(C4_DESC,word.getWordDesc());
+            try {
+                writableDb.insertOrThrow(TN_WORD,null,values);
+            } catch (SQLiteConstraintException e) {
+                throw  e;
+            }catch (SQLException e){
+                return false;
+            }finally {
+                writableDb.close();
             }
-        } catch (SQLiteConstraintException duplicateEntry) {
-            throw duplicateEntry;
-        } catch (SQLiteException e) {
-            return false;
-        } finally {
-            writableDb.close();
         }
         return true;
     }
 
-    //Update word data
-    public boolean updateData(Word word) throws SQLiteConstraintException {
-        SQLiteDatabase writableDb = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        long result = -1;
-        try {
-            if (word != null) {
-                if (word.getWordName() != null && word.getWordMeaning() != null && word.getWordDesc() != null) {
-                    values.put(C2_NAME, word.getWordName());
-                    String meaning = word.getWordMeaning() != null ? word.getWordMeaning() : "N/A";
-                    String desc = word.getWordDesc() != null ? word.getWordDesc() : "N/A";
-                    values.put(C3_MEANING, meaning);
-                    values.put(C4_DESC, desc);
-                    //It throws exception to handle
-                    result = writableDb.update(TN_WORD, values, C2_NAME + "=?", new String[]{word.getWordName()});
-
-                } else if (word.getWordName() != null && word.getWordMeaning() != null) {
-                    values.put(C2_NAME, word.getWordName());
-                    values.put(C3_MEANING, word.getWordMeaning());
-                    result = writableDb.update(TN_WORD, values, C2_NAME + "=?", new String[]{word.getWordName()});
-
-                } else if (word.getWordName() != null && word.getWordDesc() != null) {
-                    values.put(C2_NAME, word.getWordName());
-                    values.put(C4_DESC, word.getWordDesc());
-                    result = writableDb.update(TN_WORD, values, C2_NAME + "=?", new String[]{word.getWordName()});
-
-                } else {
-                    values.put(C2_NAME, word.getWordName());
-                    result = writableDb.update(TN_WORD, values, C2_NAME + "=?", new String[]{word.getWordName()});
-
-                }
-
+    public boolean updateData(Word word) throws SQLiteConstraintException{
+        SQLiteDatabase writableDb=getWritableDatabase();
+        ContentValues values=new ContentValues();
+        long result=-1;
+        if (word != null) {
+            values.put(C3_MEANING,word.getWordMeaning());
+            values.put(C4_DESC,word.getWordDesc());
+            try {
+                result=writableDb.update(TN_WORD, values, C2_NAME + "=?", new String[]{word.getWordName()});
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }finally {
+                writableDb.close();
             }
-        } catch (SQLiteConstraintException duplicateEntry) {
-            throw duplicateEntry;
-        } catch (SQLiteException e) {
-            return false;
-        } finally {
-            writableDb.close();
         }
-        if (result == -1) {
+        if (result==-1){
             return false;
-        } else {
+        }else {
             return true;
         }
     }

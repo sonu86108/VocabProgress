@@ -65,20 +65,20 @@
                 android:layout_margin="16dp"
                 android:orientation="vertical">
 
-<!--                <ImageView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center_horizontal"-->
-<!--                    android:src="@drawable/me_time" />-->
-
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Words"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_word" />
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Words"-->
+<!--                    android:textAlignment="center"-->
+<!--                    android:textColor="@color/colorPrimary"-->
+<!--                    android:textSize="25sp"-->
+<!--                    android:textStyle="bold" />-->
 
             </LinearLayout>
 
@@ -104,20 +104,20 @@
                 android:layout_margin="16dp"
                 android:orientation="vertical">
 
-<!--                <ImageView-->
-<!--                    android:layout_width="100dp"-->
-<!--                    android:layout_height="100dp"-->
-<!--                    android:layout_gravity="center_horizontal"-->
-<!--                    android:src="@drawable/ic_quizes" />-->
-
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Quizes"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_quiz" />
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Quizes"-->
+<!--                    android:textAlignment="center"-->
+<!--                    android:textColor="@color/colorPrimary"-->
+<!--                    android:textSize="25sp"-->
+<!--                    android:textStyle="bold" />-->
 
             </LinearLayout>
 
@@ -146,20 +146,20 @@
                 android:layout_margin="16dp"
                 android:orientation="vertical">
 
-<!--                <ImageView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center_horizontal"-->
-<!--                    android:src="@drawable/lovely_time" />-->
-
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Play Quiz"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_play_quiz" />
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Play Quiz"-->
+<!--                    android:textAlignment="center"-->
+<!--                    android:textColor="@color/colorPrimary"-->
+<!--                    android:textSize="25sp"-->
+<!--                    android:textStyle="bold" />-->
 
             </LinearLayout>
 
@@ -185,20 +185,20 @@
                 android:layout_margin="16dp"
                 android:orientation="vertical">
 
-<!--                <ImageView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center_horizontal"-->
-<!--                    android:src="@drawable/team_time" />-->
-
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Progress"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_progress" />
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Progress"-->
+<!--                    android:textAlignment="center"-->
+<!--                    android:textColor="@color/colorPrimary"-->
+<!--                    android:textSize="25sp"-->
+<!--                    android:textStyle="bold" />-->
 
             </LinearLayout>
 
@@ -227,20 +227,20 @@
                 android:layout_margin="16dp"
                 android:orientation="vertical">
 
-<!--                <ImageView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center_horizontal"-->
-<!--                    android:src="@drawable/friends" />-->
-
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Settings"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_settings" />
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Settings"-->
+<!--                    android:textAlignment="center"-->
+<!--                    android:textColor="@color/colorPrimary"-->
+<!--                    android:textSize="25sp"-->
+<!--                    android:textStyle="bold" />-->
 
             </LinearLayout>
 
@@ -266,20 +266,20 @@
                 android:layout_margin="16dp"
                 android:orientation="vertical">
 
-<!--                <ImageView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center_horizontal"-->
-<!--                    android:src="@drawable/calendar" />-->
-
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="  Help"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_help" />
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="  Help"-->
+<!--                    android:textAlignment="center"-->
+<!--                    android:textColor="@color/colorPrimary"-->
+<!--                    android:textSize="25sp"-->
+<!--                    android:textStyle="bold" />-->
 
             </LinearLayout>
 

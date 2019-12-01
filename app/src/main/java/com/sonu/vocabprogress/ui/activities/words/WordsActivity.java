@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,11 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Word;
-import com.sonu.vocabprogress.ui.activities.NotificationDialogActivity;
+import com.sonu.vocabprogress.ui.activities.updateword.UpdateWordDialogActivity;
 import com.sonu.vocabprogress.ui.activities.SettingsActivity;
 import com.sonu.vocabprogress.ui.adapters.WordListAdapter;
 import com.sonu.vocabprogress.utilities.AppUtils;
-import com.sonu.vocabprogress.utilities.SelectionMode;
+import com.sonu.vocabprogress.utilities.constants.Consts;
 import com.sonu.vocabprogress.utilities.datahelpers.interfaces.RecyclerViewTouchEventListener;
 import com.sonu.vocabprogress.utilities.datahelpers.SQLiteHelper;
 import com.sonu.vocabprogress.utilities.datahelpers.interfaces.DataFetcher;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class WordListActivity extends AppCompatActivity
+public class WordsActivity extends AppCompatActivity
         implements View.OnClickListener, RecyclerViewTouchEventListener {
 
     SelectionMode selectionMode;
@@ -36,7 +37,7 @@ public class WordListActivity extends AppCompatActivity
     RecyclerView wordListRecyclerView;
     TextView tvMsg;
     List<Word> wordList;
-    WordListAdapter wordListAdapter;
+    public WordListAdapter wordListAdapter;
     FloatingActionButton fabAddWord;
     SQLiteHelper db;
     ViewModel viewModel;
@@ -75,8 +76,8 @@ public class WordListActivity extends AppCompatActivity
     public void onClick(View p1) {
         switch (p1.getId()) {
             case R.id.id_fab:
-                startActivityForResult(new Intent(this,
-                        NotificationDialogActivity.class), 24);
+                Intent intent=new Intent(this,UpdateWordDialogActivity.class);
+                startActivity(intent);
                 break;
         }
     }
@@ -85,16 +86,14 @@ public class WordListActivity extends AppCompatActivity
     public void onRecyclerViewItemClick(View v, int position) {
         if (selectionMode.isInSelectionMode()) {
             selectionMode.onClick(v, position);
-        } else {
-            if(v.getId()==R.id.id_more_menu_word){
-
-            }
+        } else  if(v.getId()==R.id.id_more_menu_word){
+            showPopUpMenu(v,position);
         }
     }
 
     @Override
     public void onRecyclerViewItemLongClick(View v, ImageView menu, int p) {
-        selectionMode.enterInSelectionMode(fabAddWord, menu,toolbar, wordList);
+        selectionMode.enterInSelectionMode(fabAddWord,toolbar, wordList);
         selectionMode.onLongClick(v, p);
     }
 
@@ -109,7 +108,7 @@ public class WordListActivity extends AppCompatActivity
         if (selectionMode.isInSelectionMode()) {
             selectionMode.onOptionsItemSelected(item);
         }else if(item.getItemId()==R.id.id_menu_word_activity_settings){
-            startActivity(new Intent(WordListActivity.this, SettingsActivity.class));
+            startActivity(new Intent(WordsActivity.this, SettingsActivity.class));
         }else if(item.getItemId()==R.id.id_menu_word_activity_help){
 
         }
@@ -132,6 +131,11 @@ public class WordListActivity extends AppCompatActivity
         updateWordList();
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        updateWordList();
+    }
 
     @Override
     protected void onPause() {
@@ -177,12 +181,34 @@ public class WordListActivity extends AppCompatActivity
         });
     }
 
+    private void  showPopUpMenu(View view , final int position){
+        PopupMenu menuMore=new PopupMenu(this,view);
+        menuMore.getMenuInflater().inflate(R.menu.menu_more_activity_word,menuMore.getMenu());
+        menuMore.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(item.getItemId()==R.id.id_popup_menu_item_edit){
+                    Intent intent=new Intent(WordsActivity.this, UpdateWordDialogActivity.class);
+                    intent.putExtra(Consts.extras.WORD_SERIALIZABEL.toString(),wordList.get(position));
+                    intent.setAction(Consts.Action.UPDATE_LOCAL.toString());
+                    startActivity(intent);
+                }else if (item.getItemId()==R.id.id_popup_menu_item_delete){
+                    db.deleteData(wordList.get(position).getWordName());
+                    updateWordList();
+                }
+                return true;
+            }
+        });
+        menuMore.show();
+    }
+
+
     public void showInSnackBar(String msg) {
         AppUtils.snackBar(findViewById(R.id.id_layout_activity_wordlist),msg);
     }
 
     public void showInToast(String msg) {
-        Toast.makeText(WordListActivity.this, "", Toast.LENGTH_LONG).show();
+        Toast.makeText(WordsActivity.this, "", Toast.LENGTH_LONG).show();
     }
     private void onDataNotFound(){
         if(wordList.isEmpty()){

@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
+        android:name=".utilities.App"
         android:allowBackup="true"
         android:icon="@drawable/login_icon"
         android:label="@string/app_name"
@@ -16,7 +17,7 @@
             android:name=".ui.activities.SettingsActivity"></activity>
         <activity
             android:label="Words"
-            android:name=".ui.activities.words.WordListActivity"
+            android:name=".ui.activities.words.WordsActivity"
             android:parentActivityName=".ui.activities.MainActivity"
             android:theme="@style/Theme.NoActionBar">
             <meta-data
@@ -31,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.NotificationDialogActivity"
+            android:name=".ui.activities.updateword.UpdateWordDialogActivity"
             android:excludeFromRecents="true"
             android:theme="@style/TransparentCompat" />
         <activity
@@ -43,7 +44,6 @@
         <activity
             android:label="Words"
             android:name=".ui.activities.QuizWordsActivity" />
-        <activity android:name=".utilities.tmp.AndroidDatabaseManager" />
         <activity
             android:label="Play Quiz"
             android:name=".ui.activities.PlayQuizActivity" />

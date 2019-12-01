@@ -1,0 +1,10 @@
+Guide to use this application....
+1.This application lets you create custom vocabulary quiz.
+2.You can create a quiz by selecting 10 words from main word section.
+3.There are two ways though which you can enter words ,first is direct method where you directly enter words by clicking  plus button
+or you can enter words by copying them to clipboard.
+4.As soon as you copy a text via your device it will automatically get saved in this appilcation you can further provide the meaning or you
+can provide meaning on the go by clicking on the notification's edit button which will be shown on text copy event.
+
+Note:-
+To use copy text feature , make sure that you have started the background service via main switch available on upper write corner.

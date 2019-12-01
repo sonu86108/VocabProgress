@@ -5,14 +5,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Word;
 import com.sonu.vocabprogress.utilities.datahelpers.interfaces.RecyclerViewTouchEventListener;
-
 import java.util.List;
 
 
@@ -64,6 +61,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordLi
             meaning = view.findViewById(R.id.id_textview_meaning);
             desc = view.findViewById(R.id.id_textview_desc);
             moreOptionsWord=view.findViewById(R.id.id_more_menu_word);
+            moreOptionsWord.setLongClickable(false);
             cardView = view.findViewById(R.id.id_cardView);
             cardView.setOnLongClickListener(this);
             cardView.setOnClickListener(this);

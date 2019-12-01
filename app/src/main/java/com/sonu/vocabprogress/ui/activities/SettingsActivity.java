@@ -52,9 +52,9 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()){
             case R.id.id_signOut:
                 if(CloudDatabaseHelper.isSignedIn()){
-                    signIn();
-                }else {
                     signOut();
+                }else {
+                    signIn();
                 }
                 break;
         }

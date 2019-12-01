@@ -1,5 +1,6 @@
 package com.sonu.vocabprogress.ui.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,17 +10,18 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.services.ClipBoardListenerService;
-import com.sonu.vocabprogress.ui.activities.words.WordListActivity;
+import com.sonu.vocabprogress.ui.activities.words.WordsActivity;
 import com.sonu.vocabprogress.utilities.AppUtils;
+import com.sonu.vocabprogress.utilities.datahelpers.AssetHelper;
 import com.sonu.vocabprogress.utilities.datahelpers.CloudDatabaseHelper;
 import com.sonu.vocabprogress.utilities.datahelpers.SQLiteHelper;
 import com.sonu.vocabprogress.utilities.sharedprefs.AppPrefs;
-import com.sonu.vocabprogress.utilities.tmp.AndroidDatabaseManager;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.id_cardView_WordList:
-                Intent wordListIntent = new Intent(MainActivity.this, WordListActivity.class);
+                Intent wordListIntent = new Intent(MainActivity.this, WordsActivity.class);
                 startActivity(wordListIntent);
                 break;
             case R.id.id_cardView_Quizes:
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(quizListIntent);
                 break;
             case R.id.id_cardView_help:
-                startActivity(new Intent(this, AndroidDatabaseManager.class));
+                showHelpDialog();
                 break;
             case R.id.id_cardView_playQuiz:
                 Intent playQuizIntent = new Intent(MainActivity.this,
@@ -147,6 +149,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mainSwitch.setChecked(false);
         }
     }
-
+   private void showHelpDialog(){
+       AlertDialog.Builder helpDialog=new AlertDialog.Builder(this)
+               .setCancelable(true)
+               .setTitle(getResources().getString(R.string.help))
+               .setMessage(AssetHelper.getInstance().getAssestString("help.txt"))
+               .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+                       dialog.dismiss();
+                   }
+               });
+       helpDialog.show();
+   }
 
 }

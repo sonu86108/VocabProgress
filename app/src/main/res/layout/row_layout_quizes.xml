@@ -36,10 +36,11 @@
             android:id="@+id/id_playQuiz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:background="@color/light"
-            android:src="@drawable/ic_btn_play"
+            android:src="@drawable/ic_play_btn"
             android:visibility="gone" />
         <View
             android:layout_width="match_parent"

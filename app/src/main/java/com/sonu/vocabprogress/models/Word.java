@@ -1,6 +1,8 @@
 package com.sonu.vocabprogress.models;
 
-public class Word {
+import java.io.Serializable;
+
+public class Word implements Serializable {
     private String wordName, wordMeaning, wordDesc,wordID;
     public Word(String wordName, String wordMeaning, String wordDesc, String wordID) {
         this.wordName = wordName;
@@ -8,6 +10,9 @@ public class Word {
         this.wordDesc = wordDesc;
         this.wordID = wordID;
     }
+   public Word(String word){
+     this.wordName=word;
+   }
    public Word(){
 
    }

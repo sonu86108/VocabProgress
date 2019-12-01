@@ -18,7 +18,7 @@ import java.util.List;
 
 public class CloudDatabaseHelper {
     private static CloudDatabaseHelper instance=null;
-    private static final String NODE_QUIZES="quizes";
+    private static final String NODE_QUIZES="ic_quizes";
     private static final String NODE_APP_MAIN="VocabProgress/UserData/";
     private final String NODE_QUIZ_WORD="quiz_words";
     private FirebaseAuth firebaseAuth;
@@ -84,6 +84,10 @@ public class CloudDatabaseHelper {
                onGetDataListener.onFailure(databaseError.getMessage());
             }
         });
+    }
+
+    public void updateQuizWords(){
+
     }
 
     public static boolean isSignedIn(){

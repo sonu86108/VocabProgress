@@ -1,4 +1,4 @@
-package com.sonu.vocabprogress.utilities;
+package com.sonu.vocabprogress.ui.activities.words;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sonu.vocabprogress.R;
 import com.sonu.vocabprogress.models.Word;
-import com.sonu.vocabprogress.ui.activities.words.WordListActivity;
+import com.sonu.vocabprogress.ui.activities.words.WordsActivity;
 import com.sonu.vocabprogress.ui.dialogs.MyDialogs;
 import com.sonu.vocabprogress.utilities.datahelpers.SQLiteHelper;
 
@@ -24,10 +24,9 @@ import java.util.List;
 public class SelectionMode {
     FloatingActionButton fab;
     Drawable background;
-    View view;
     Toolbar toolbar;
     private boolean isInSelectionMode;
-    private WordListActivity wordListActivity;
+    private WordsActivity wordListActivity;
     private int counter;
     private List<Word> wordList;
     private List<Integer> selectedWordList;
@@ -35,7 +34,7 @@ public class SelectionMode {
     private ImageView moreOptions;
 
     public SelectionMode(Context context) {
-        this.wordListActivity = (WordListActivity) context;
+        this.wordListActivity = (WordsActivity) context;
         selectedWordList = new ArrayList<Integer>();
         selectedWordView = new ArrayList<View>();
     }
@@ -73,14 +72,12 @@ public class SelectionMode {
 
     }
 
-    public void enterInSelectionMode(FloatingActionButton fab,ImageView moreOptions,
+    public void enterInSelectionMode(FloatingActionButton fab,
                                      Toolbar toolbar, List<Word> words) {
         isInSelectionMode = true;
         this.fab = fab;
         this.toolbar = toolbar;
         this.wordList = words;
-        this.moreOptions=moreOptions;
-        moreOptions.setVisibility(View.GONE);
         toolbar.getMenu().clear();
         toolbar.inflateMenu(R.menu.menu_selection_mode);
         fab.setVisibility(View.GONE);
@@ -89,7 +86,7 @@ public class SelectionMode {
 
     public void exitSelectionMode() {
         isInSelectionMode = false;
-        moreOptions.setVisibility(View.VISIBLE);
+        wordListActivity.wordListAdapter.notifyDataSetChanged();
         for (View v : selectedWordView) {
             v.setBackground(background);
             v.setEnabled(true);
